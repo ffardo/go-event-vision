@@ -21,10 +21,7 @@ In such sensors, every pixel is independent of the other pixels, and data is out
 
 
 
-This [video](https://www.youtube.com/watch?v=LauQ6LWTkxM) by the Robotics and Perception Group from the University of Zurich demonstrates how these sensors are different than conventional cameras with a global shutter.
-
-Because the data format is different than conventional imaging, most Computer Vision algorithms for well-known problems are incompatible or require extra steps to work with event streams. This is a relatively recent topic in the Computer Vision field with many opportunities for scientific research.
-
+This [video](https://www.youtube.com/watch?v=LauQ6LWTkxM) by the Robotics and Perception Group from the University of Zurich demonstrates how these sensors are different from conventional cameras with a global shutter.
 
 # Why Go?
 
@@ -40,9 +37,9 @@ This package features the following functionality
 
 * ATIS format support
 * Support to N-Caltech and N-MNIST datasets, including saccade stabilization
-* Spatio temporal filtering
+* Spatio-temporal filtering
 * Refraction
-* Additive and degenerative noise applied directly into the event stream
+* Additive and degenerative noise applied directly to the event stream
 
 # Basic types
 
