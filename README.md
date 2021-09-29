@@ -129,4 +129,4 @@ Sample data in the tests contain a subset of events from a capture extracted fro
 
 # References
 
-    [1] Orchard, G.; Cohen, G.; Jayawant, A.; and Thakor, N.  “Converting Static Image Datasets to Spiking Neuromorphic Datasets Using Saccades", Frontiers in Neuroscience, vol.9, no.437, Oct. 2015 (open access Frontiers link)
+[1] Orchard, G.; Cohen, G.; Jayawant, A.; and Thakor, N.  “Converting Static Image Datasets to Spiking Neuromorphic Datasets Using Saccades", Frontiers in Neuroscience, vol.9, no.437, Oct. 2015 ([open access Frontiers link](https://www.frontiersin.org/articles/10.3389/fnins.2015.00437/full))
