@@ -9,7 +9,7 @@ It also contains additional functionalities such as controlled noise applied dir
 
 Event-based cameras are imaging sensors that register local brightness changes in the form of asynchronous events. Each event is represented by its (x,y) coordinates, a timestamp, and a polarity indicating an upward or downward change. However, an event does not contain information about light intensity or magnitude.
 
-In such sensors, every pixel is independent of the other pixels, and data is output as a stream of asynchronous events.
+In such sensors, every pixel is independent of the other pixels, and data is output as a stream of asynchronous events. The following table has an example of such event data.
 
 
 | timestamp |  x | y | polarity |
@@ -123,3 +123,10 @@ This project is a work in progress and there is no tagged release yet. The follo
 * Additional formats such as Prophesee
 * Support to additional datasets such as N-Cars and DDD17
 
+
+# Additional Information
+Sample data in the tests contain a subset of events from a capture extracted from the N-Caltech dataset, which can be obtained  [here](https://www.garrickorchard.com/datasets/n-caltech101) [1]
+
+# References
+
+    [1] Orchard, G.; Cohen, G.; Jayawant, A.; and Thakor, N.  “Converting Static Image Datasets to Spiking Neuromorphic Datasets Using Saccades", Frontiers in Neuroscience, vol.9, no.437, Oct. 2015 (open access Frontiers link)
