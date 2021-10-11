@@ -47,9 +47,7 @@ This package features the following functionality
 
 Clone this repository and perform go install comand
 ```
-git clone https://github.com/ffardo/go-event-vision
-cd go-event-vision
-go install
+go get github.com/ffardo/go-event-vision
 ```
 
 # Basic types
