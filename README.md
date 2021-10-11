@@ -1,4 +1,4 @@
-![semaphoreci](https://ffardo.semaphoreci.com/badges/go-event-vision.svg)
+[![Build Status](https://ffardo.semaphoreci.com/badges/go-event-vision/branches/master.svg?style=shields)](https://ffardo.semaphoreci.com/projects/go-event-vision)
 
 # go-event-vision
 Go package for event based vision
