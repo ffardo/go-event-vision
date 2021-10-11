@@ -1,3 +1,5 @@
+https://ffardo.semaphoreci.com/badges/go-event-vision.svg
+
 # go-event-vision
 Go package for event based vision
 
