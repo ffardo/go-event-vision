@@ -41,6 +41,15 @@ This package features the following functionality
 * Refraction
 * Additive and degenerative noise applied directly to the event stream
 
+# Installation instructions
+
+Clone this repository and perform go install comand
+```
+git clone https://github.com/ffardo/go-event-vision
+cd go-event-vision
+go install
+```
+
 # Basic types
 
 All (x,y) pixel coordinates are represented by the type ```Point2D```
@@ -126,6 +135,8 @@ This project is a work in progress and there is no tagged release yet. The follo
 
 # Additional Information
 Sample data in the tests contain a subset of events from a capture extracted from the N-Caltech dataset, which can be obtained  [here](https://www.garrickorchard.com/datasets/n-caltech101) [1]
+
+This package was tested on Ubuntu 20.04. However, as it does not use OS-specific features or rely on third-party packages, compatibility issues are not expected, but there is no guarantee.
 
 # References
 
