@@ -8,7 +8,6 @@ import (
 )
 
 func TestNeuromorphicDataset_Read(t *testing.T) {
-
 	refData := event.EventCapture{
 		Events: []event.Event{
 			{Coords: event.Point2D{X: 10, Y: 30}, Ts: 937, P: 1},

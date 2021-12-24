@@ -22,16 +22,15 @@ In such sensors, every pixel is independent of the other pixels, and data is out
 |    ...    | ...|...|    ...   |
 
 
-
 This [video](https://www.youtube.com/watch?v=LauQ6LWTkxM) by the Robotics and Perception Group from the University of Zurich demonstrates how these sensors are different from conventional cameras with a global shutter.
 
 # Why Go?
 
-I initially developed my algorithms in Python and used [scikit-learn](https://scikit-learn.org/) for data cleanup and classification. However, processing raw data from N-MNIST and N-Caltech datasets in pure Python on CPU proved to be too time-consuming. With the added noise, the M-NIST dataset could get as large as 200+ GB.
+I initially developed my algorithms in Python and used [scikit-learn](https://scikit-learn.org/) for data cleanup and classification. But, processing raw data from N-MNIST and N-Caltech datasets in pure Python on CPU was very time-consuming.
 
-I needed an alternative language that was fast and productive. I also would need to export processed data into a CSV file to apply machine learning scripts using Python at a later stage. Go seemed like a good alternative for the task and this change saved me precious hours.
+I needed an alternative language that was fast and productive. I would also need to export processed data into a CSV file to apply machine learning scripts using Python later. Go seemed like a good alternative for the task and this change saved me precious hours.
 
-Also, at the present moment, Go is not the de facto language for scientific research and I think new libraries and tools are always welcome.
+Also, Go is not the de facto language for scientific research, and I think new libraries and tools are always welcome.
 
 # Features
 
@@ -41,11 +40,12 @@ This package features the following functionality
 * Support to N-Caltech and N-MNIST datasets, including saccade stabilization
 * Spatio-temporal filtering
 * Refraction
-* Additive and degenerative noise applied directly to the event stream
+* Additive and degenerative noise generation
+* Surface of Active Events (SAE) generation
 
 # Installation instructions
 
-Clone this repository and perform go install comand
+Use go get to install the library
 ```
 go get github.com/ffardo/go-event-vision
 ```
@@ -61,7 +61,7 @@ type Point2D struct {
 
 ```
 
-An event is represented by the ```Event``` type which has the following format
+An event is represented by the `Event` type which has the following format
 
 ```
 type Event struct {
@@ -71,9 +71,9 @@ type Event struct {
 }
 ```
 
-All provided processing functions will accept a slice of ```Event``` as argument and return another slice with the processed events. No function will affect instance data. In this regard, go-event-vision differs slightly from [event-Python](https://github.com/gorchard/event-Python)
+All provided processing functions will accept a slice of `Event` as argument and return another slice with the processed events. No function will affect instance data. In this regard, go-event-vision differs slightly from [event-Python](https://github.com/gorchard/event-Python)
 
-An event capture from a dataset is represented by the following ```EventCapture``` structure.
+An event capture from a dataset is represented by the following `EventCapture` structure.
 
 ```
 type EventCapture struct {
@@ -111,13 +111,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//Appplying spatio-temporal filtering 5us
+	// Applying spatio-temporal filtering 5us
 	evCap.Events = filter.SpatioTemporal(evCap.Events, evCap.Width, evCap.Height, 5000)
 
-	//Applying refraction of 1us
+	// Applying refraction of 1us
 	evCap.Events = filter.ApplyRefraction(evCap.Events, 1000)
 
-	//Stabilize saccadic movements
+	// Stabilize saccadic movements
 	evCap.Events = neuromorphic.Stabilize(evCap.Events)
 
 }
@@ -128,16 +128,16 @@ func main() {
 This project is a work in progress and there is no tagged release yet. The following requirements and features are planned
 
 * Full test coverage
-* Instalation and documentation from pkg.go.dev
 * Additional formats such as Prophesee
-* Support to additional datasets such as N-Cars and DDD17
+* Additional dataset support such as N-Cars and DDD17
+* Feature extraction algorithms such as HATs
 
 
 # Additional Information
 Sample data in the tests contain a subset of events from a capture extracted from the N-Caltech dataset, which can be obtained  [here](https://www.garrickorchard.com/datasets/n-caltech101) [1]
 
-This package was tested on Ubuntu 20.04. However, as it does not use OS-specific features or rely on third-party packages, compatibility issues are not expected, but there is no guarantee.
+This package was developed and tested on Ubuntu 20.04. Since it does not use OS-specific features or rely on third-party packages, compatibility issues are not expected, but there is no guarantee.
 
 # References
 
-[1] Orchard, G.; Cohen, G.; Jayawant, A.; and Thakor, N.  “Converting Static Image Datasets to Spiking Neuromorphic Datasets Using Saccades", Frontiers in Neuroscience, vol.9, no.437, Oct. 2015 ([open access Frontiers link](https://www.frontiersin.org/articles/10.3389/fnins.2015.00437/full))
+[1] Orchard, G.; Cohen, G.; Jayawant, A.; and Thakor, N. “Converting Static Image Datasets to Spiking Neuromorphic Datasets Using Saccades", Frontiers in Neuroscience, vol.9, no.437, Oct. 2015 ([open access Frontiers link](https://www.frontiersin.org/articles/10.3389/fnins.2015.00437/full))
