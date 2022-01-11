@@ -7,37 +7,6 @@ import (
 	"github.com/ffardo/go-event-vision"
 )
 
-func TestCropTsMap(t *testing.T) {
-	type args struct {
-		src    map[event.Point2D]int
-		x      int
-		y      int
-		width  int
-		height int
-	}
-
-	tsMap := map[event.Point2D]int{
-		{X: 1, Y: 1}: 1,
-		{X: 5, Y: 5}: 2,
-	}
-
-	tests := []struct {
-		name string
-		args args
-		want map[event.Point2D]int
-	}{
-		{name: "Test simple crop with one event inside area", args: args{tsMap, 0, 0, 2, 2}, want: map[event.Point2D]int{{X: 1, Y: 1}: 1}},
-		{name: "Test crop area between events", args: args{tsMap, 2, 2, 3, 3}, want: map[event.Point2D]int{}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := CropTsMap(tt.args.src, tt.args.x, tt.args.y, tt.args.width, tt.args.height); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("CropTsMap() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestSpatioTemporal(t *testing.T) {
 	type args struct {
 		src    []event.Event
@@ -64,7 +33,8 @@ func TestSpatioTemporal(t *testing.T) {
 		args args
 		want []event.Event
 	}{
-		{name: "Test sample event filtering",
+		{
+			name: "Test sample event filtering",
 			args: args{src: srcData, xMax: 35, yMax: 35, usTime: 5000},
 			want: []event.Event{
 				{Coords: event.Point2D{X: 16, Y: 11}, Ts: 6609, P: 0},
@@ -98,7 +68,8 @@ func TestApplyRefraction(t *testing.T) {
 					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 900, P: 1},
 					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 1000, P: 1},
 				},
-				usTime: 1000},
+				usTime: 1000,
+			},
 			want: []event.Event{
 				{Coords: event.Point2D{X: 10, Y: 30}, Ts: 900, P: 1},
 			},
@@ -110,7 +81,8 @@ func TestApplyRefraction(t *testing.T) {
 					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 900, P: 1},
 					{Coords: event.Point2D{X: 11, Y: 30}, Ts: 1000, P: 1},
 				},
-				usTime: 1000},
+				usTime: 1000,
+			},
 			want: []event.Event{
 				{Coords: event.Point2D{X: 10, Y: 30}, Ts: 900, P: 1},
 				{Coords: event.Point2D{X: 11, Y: 30}, Ts: 1000, P: 1},
@@ -123,7 +95,8 @@ func TestApplyRefraction(t *testing.T) {
 					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 1000, P: 1},
 					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 3000, P: 1},
 				},
-				usTime: 1000},
+				usTime: 1000,
+			},
 			want: []event.Event{
 				{Coords: event.Point2D{X: 10, Y: 30}, Ts: 1000, P: 1},
 				{Coords: event.Point2D{X: 10, Y: 30}, Ts: 3000, P: 1},
@@ -134,6 +107,65 @@ func TestApplyRefraction(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := ApplyRefraction(tt.args.src, tt.args.usTime); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("ApplyRefraction() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestByTime(t *testing.T) {
+	type args struct {
+		src   []event.Event
+		start int
+		end   int
+	}
+	tests := []struct {
+		name string
+		args args
+		want []event.Event
+	}{
+		{
+			name: "Test ByTime with events after range",
+			args: args{
+				src: []event.Event{
+					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 1000, P: 1},
+					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 3000, P: 1},
+				},
+				start: 0,
+				end:   900,
+			},
+			want: []event.Event{},
+		},
+		{
+			name: "Test ByTime with events before range",
+			args: args{
+				src: []event.Event{
+					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 1000, P: 1},
+					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 3000, P: 1},
+				},
+				start: 4000,
+				end:   4500,
+			},
+			want: []event.Event{},
+		},
+		{
+			name: "Test ByTime with event within range",
+			args: args{
+				src: []event.Event{
+					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 1000, P: 1},
+					{Coords: event.Point2D{X: 10, Y: 30}, Ts: 3000, P: 1},
+				},
+				start: 0,
+				end:   1500,
+			},
+			want: []event.Event{
+				{Coords: event.Point2D{X: 10, Y: 30}, Ts: 1000, P: 1},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ByTime(tt.args.src, tt.args.start, tt.args.end); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ByTime() = %v, want %v", got, tt.want)
 			}
 		})
 	}

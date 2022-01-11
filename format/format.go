@@ -12,7 +12,6 @@ type Atis struct {
 }
 
 func (a Atis) newEventFromBytes(data []byte) event.Event {
-
 	x := int(data[0])
 	y := int(data[1])
 	ts1 := (int(data[2]) & 127) << 16
@@ -55,10 +54,9 @@ func (a Atis) eventToBytes(ev event.Event) []byte {
 	return data
 }
 
-//ReadEvents read events in the ATIS AER format from file
+// ReadEvents read events in the ATIS AER format from file
 func (a Atis) ReadEvents() (event.EventCapture, error) {
 	f, err := os.Open(a.FilePath)
-
 	if err != nil {
 		return event.EventCapture{}, err
 	}
@@ -96,7 +94,7 @@ func (a Atis) ReadEvents() (event.EventCapture, error) {
 	}, nil
 }
 
-//WriteEvents will write events to file in the ATIS AER format
+// WriteEvents will write events to file in the ATIS AER format
 func (a Atis) WriteEvents(evCap event.EventCapture) error {
 	f, err := os.Create(a.FilePath)
 

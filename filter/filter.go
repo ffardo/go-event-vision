@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"github.com/ffardo/go-event-vision"
+	"github.com/ffardo/go-event-vision/sae"
 )
 
 func intMax(a, b int) int {
@@ -20,22 +21,6 @@ func intMin(a, b int) int {
 	return b
 }
 
-//CropTsMap crops Time Surface map starting at x,y and ending at x+widht, y+height
-func CropTsMap(src map[event.Point2D]int, x, y, width, height int) map[event.Point2D]int {
-	dst := make(map[event.Point2D]int)
-	for i := 0; i < height; i++ {
-		for j := 0; j < width; j++ {
-			c := event.Point2D{X: j + x, Y: i + y}
-			value, ok := src[c]
-			if ok {
-				dst[c] = value
-			}
-		}
-	}
-
-	return dst
-}
-
 /*
 SpatioTemporal generate a filtered set of events.
 Uses a background activity filter on the events, such that only events which are
@@ -43,7 +28,6 @@ correlated with a neighbouring event within 'usTime' microseconds will be allowe
 through the filter.
 */
 func SpatioTemporal(src []event.Event, xMax, yMax, usTime int) []event.Event {
-
 	t0 := make(map[event.Point2D]int)
 
 	for _, ev := range src {
@@ -66,7 +50,7 @@ func SpatioTemporal(src []event.Event, xMax, yMax, usTime int) []event.Event {
 			minYSub := intMax(0, dt.Coords.Y-1)
 			maxYSub := intMin(yMax, dt.Coords.Y+1)
 
-			t0Temp := CropTsMap(t0, minXSub, minYSub, (maxXSub-minXSub)+1, (maxYSub-minYSub)+1)
+			t0Temp := sae.CropMap(t0, minXSub, minYSub, (maxXSub-minXSub)+1, (maxYSub-minYSub)+1)
 
 			minTs := int(math.MaxInt64)
 			for _, v := range t0Temp {
@@ -92,6 +76,29 @@ func SpatioTemporal(src []event.Event, xMax, yMax, usTime int) []event.Event {
 		if v != true {
 			dst[pos] = src[idx]
 			pos++
+		}
+	}
+
+	return dst
+}
+
+/*
+ByTime filters events between a start and an end time
+*/
+func ByTime(src []event.Event, start, end int) []event.Event {
+	dst := []event.Event{}
+
+	totalEvents := len(src)
+
+	done := false
+
+	for i := 0; i < totalEvents && !done; i++ {
+
+		ev := src[i]
+		if ev.Ts >= start && ev.Ts <= end {
+			dst = append(dst, src[i])
+		} else if ev.Ts > end {
+			done = true
 		}
 	}
 
