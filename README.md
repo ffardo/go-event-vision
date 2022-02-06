@@ -37,7 +37,9 @@ Also, Go is not the de facto language for scientific research, and I think new l
 This package features the following functionality
 
 * ATIS format support
+* Prophesee DAT format support (Read only)
 * Support to N-Caltech and N-MNIST datasets, including saccade stabilization
+* Support to N-Cars dataset
 * Spatio-temporal filtering
 * Refraction
 * Additive and degenerative noise generation
@@ -100,7 +102,7 @@ import (
 
 func main() {
 
-	//Adjust path to actual location
+	// Adjust path to actual location
 	reader := neuromorphic.NeuromorphicDataset{
 		FilePath: "Caltech101/accordion/image_0005.bin",
 	}
@@ -128,8 +130,8 @@ func main() {
 This project is a work in progress and there is no tagged release yet. The following requirements and features are planned
 
 * Full test coverage
-* Additional formats such as Prophesee
-* Additional dataset support such as N-Cars and DDD17
+* Full support to Prophesee DAT format
+* Additional dataset support such as DDD17
 * Feature extraction algorithms such as HATs
 
 
