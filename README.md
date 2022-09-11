@@ -44,6 +44,7 @@ This package features the following functionality
 * Refraction
 * Additive and degenerative noise generation
 * Surface of Active Events (SAE) generation
+* Basic rendering of event streams and SAE
 
 # Installation instructions
 
@@ -85,9 +86,10 @@ type EventCapture struct {
 }
 ```
 
-# Code example
+# Code examples
 
-The following code example shows the basic functionality of the event vision library.
+## Basic usage on Neuromorphic datasets
+The following code example shows the basic functionality of the event vision library using N-Caltech100 dataset.
 
 ```
 package main
@@ -125,14 +127,70 @@ func main() {
 }
 ```
 
+## SAE creation and rendering for N-Cars
+
+The following example reads an entry from N-Cars dataset, builds an additive SAE in map format and renders to an image pointer.
+```
+package main
+
+import (
+	"fmt"
+	"image/png"
+	"log"
+	"os"
+
+	"github.com/ffardo/go-event-vision/datasets"
+	"github.com/ffardo/go-event-vision/datasets/ncars"
+	"github.com/ffardo/go-event-vision/render"
+	"github.com/ffardo/go-event-vision/sae"
+)
+
+func main() {
+	// Adjust path to actual location
+	reader := ncars.Ncars{
+		FilePath: "Prophesee_Dataset_n_cars/n-cars_train/cars/obj_004396_td.dat",
+	}
+
+	evCap, err := datasets.ReadDataset(reader)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("Event capture\nWidht=%d\nHeight=%d\nTotal events=%d\n", evCap.Width, evCap.Height, len(evCap.Events))
+
+	s, err := sae.CreateMap(evCap.Events, "additive")
+
+	// Render SAE to image. Values are automatically normalized.
+	evImg := render.SaeMap(
+		s, evCap.Width, evCap.Height,
+	)
+
+	// Save resultin image to file
+	out, err := os.Create("./output.png")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	err = png.Encode(out, evImg)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+}
+
+```
 # Roadmap
 
 This project is a work in progress and there is no tagged release yet. The following requirements and features are planned
 
 * Full test coverage
 * Full support to Prophesee DAT format
-* Additional dataset support such as DDD17
+* Additional dataset support such as DDD17 and N-ImageNet
 * Feature extraction algorithms such as HATs
+* Additional rendering styles for SAE
 
 
 # Additional Information
