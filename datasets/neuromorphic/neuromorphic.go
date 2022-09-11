@@ -2,7 +2,7 @@ package neuromorphic
 
 import (
 	"github.com/ffardo/go-event-vision"
-	"github.com/ffardo/go-event-vision/format"
+	"github.com/ffardo/go-event-vision/format/atis"
 )
 
 // NeuromorphicDataset implements DatasetReader interface for N-MNIST and N-Caltech100 datasets
@@ -12,14 +12,14 @@ type NeuromorphicDataset struct {
 
 // Read event capture for an entry in the dataset
 func (n NeuromorphicDataset) Read() (event.EventCapture, error) {
-	atis := format.Atis{FilePath: n.FilePath}
+	atis := atis.Aer{FilePath: n.FilePath}
 
 	return atis.ReadEvents()
 }
 
 // Write capture to a dataset. Should be used only for data augmentation.
 func (n NeuromorphicDataset) Write(evCap event.EventCapture) error {
-	atis := format.Atis{FilePath: n.FilePath}
+	atis := atis.Aer{FilePath: n.FilePath}
 
 	return atis.WriteEvents(evCap)
 }

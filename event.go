@@ -8,14 +8,14 @@ type Point2D struct {
 
 // Event represents a discrete event with coordinates (X,Y), timestamp (Ts) and polarity (P)
 type Event struct {
-	Coords Point2D
-	Ts     int
-	P      int
+	Coords Point2D // event Location
+	Ts     int     // timestamp, usually expressed in microsseconds. It might change depending on vendor
+	P      int     // polarity (1: Positive event, 0: Negative event)
 }
 
 // EventCapture represents a scene captured with event sensors
 type EventCapture struct {
-	Events []Event
-	Width  int
-	Height int
+	Events []Event // list of events
+	Width  int     // width of the captured scene
+	Height int     // height of the captured scene
 }
